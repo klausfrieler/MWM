@@ -11,7 +11,7 @@ MWM_standalone(
   with_feedback = FALSE,
   with_welcome = TRUE,
   admin_password = "conifer",
-  researcher_email = "longgoldstudy@gmail.com",
+  researcher_email = "klaus.frieler@ae.mpg.de",
   languages = c("en", "de", "de_f"),
   dict = MWM::MWM_dict,
   validate_id = "auto",

@@ -22,7 +22,7 @@
 MWM_demo <- function(num_items = 3L,
                      feedback = MWM::MWM_feedback_with_score(),
                      admin_password = "demo",
-                     researcher_email = "longgoldstudy@gmail.com",
+                     researcher_email = "klaus.frieler@ae.mpg.de",
                      dict = MWM::MWM_dict,
                      language = "en",
                      ...) {
