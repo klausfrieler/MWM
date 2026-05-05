@@ -1,11 +1,11 @@
-#source("R/EDT.R")
+#source("R/MWM.R")
 options(shiny.error = browser)
 debug_locally <- !grepl("shiny-server", getwd())
 
 
-#' Standalone EDT
+#' Standalone MWM
 #'
-#' This function launches a standalone testing session for the EDT
+#' This function launches a standalone testing session for the MWM
 #' This can be used for data collection, either in the laboratory or online.
 #' @param title (Scalar character) Title to display during testing.
 #' @param num_items (Scalar integer) Number of items to be adminstered.
@@ -24,31 +24,28 @@ debug_locally <- !grepl("shiny-server", getwd())
 #' @param dict The psychTestR dictionary used for internationalisation.
 #' @param validate_id (Character scalar or closure) Function for validating IDs or string "auto" for default validation
 #' which means ID should consist only of  alphanumeric characters.
-#' @param adaptive (Scalar boolean) Indicates whether you want to use the adaptive EDT2 (TRUE)
-#' or the non-adaptive EDT (FASLE). Default is adaptive = TRUE.
 #' @param take_training (Logical scalar) Whether to include the training phase. Defaults to FALSE
 #' @param autoplay (Scalar boolean) Indicates whether you want to have autoplay for item pages (instruction pages always not-autoplay)
-#' @param ... Further arguments to be passed to \code{\link{EDT}()}.
+#' @param ... Further arguments to be passed to \code{\link{MWM}()}.
 #' @export
 
-EDT_standalone  <- function(title = NULL,
+MWM_standalone  <- function(title = NULL,
                            num_items = 18L,
-                           with_id = TRUE,
+                           with_id = FALSE,
                            with_feedback = FALSE,
                            with_welcome = TRUE,
                            admin_password = "conifer",
                            researcher_email = "longgoldstudy@gmail.com",
-                           languages = c("en", "de", "de_f", "ru", "nl", "it", "es", "zh_cn"),
-                           dict = EDT::EDT_dict,
+                           languages = c("en", "de", "de_f"),
+                           dict = MWM::MWM_dict,
                            validate_id = "auto",
-                           adaptive = TRUE,
                            take_training = FALSE,
                            autoplay = TRUE,
                            ...) {
   feedback <- NULL
   if(with_feedback) {
-    feedback <- EDT::EDT_feedback_with_graph()
-    #feedback <- EDT::EDT_feedback_with_score()
+    feedback <- MWM::MWM_feedback_with_graph()
+    #feedback <- MWM::MWM_feedback_with_score()
   }
   elts <- psychTestR::join(
     if(with_id)
@@ -58,22 +55,20 @@ EDT_standalone  <- function(title = NULL,
                              validate = validate_id),
         dict = dict),
     if(take_training)
-      EDT::EDT(num_items = num_items,
+      MWM::MWM(num_items = num_items,
                with_welcome =  FALSE,
                with_finish = FALSE,
                feedback = feedback,
                dict = dict,
                take_training = TRUE,
-               adaptive = adaptive,
                autoplay = autoplay,
                ...)
     else
-      EDT::EDT(num_items = num_items,
+      MWM::MWM(num_items = num_items,
              with_welcome = with_welcome,
              with_finish = FALSE,
              feedback = feedback,
              dict = dict,
-             adaptive = adaptive,
              autoplay = autoplay,
              ...),
     psychTestR::elt_save_results_to_disk(complete = TRUE),
@@ -81,18 +76,18 @@ EDT_standalone  <- function(title = NULL,
       res <- get_results(state, complete = T)
       #browser()
     }),
-    EDT_final_page(dict = dict)
+    MWM_final_page(dict = dict)
   )
   if(is.null(title)){
     #extract title as named vector from dictionary
     title <-
-      EDT::EDT_dict  %>%
+      MWM::MWM_dict  %>%
       as.data.frame() %>%
       dplyr::filter(key == "TESTNAME") %>%
       dplyr::select(-key) %>%
       as.list() %>%
       unlist()
-    names(title) <- tolower(names(title)) %>% str_replace("zh.cn", "zh_cn")
+    names(title) <- tolower(names(title))
   }
 
   psychTestR::make_test(

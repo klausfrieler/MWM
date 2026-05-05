@@ -1,20 +1,14 @@
-#' EDT  dictionary
+#' MWM  dictionary
 #'
-#' The default internationalisation dictionary used by the EDT.
-#' @name EDT_dict
+#' The default internationalisation dictionary used by the MWM.
+#' @name MWM_dict
 #' @docType data
 NULL
 
-#' EDT item bank
+#' MWM item bank
 #'
-#' The EDT's item bank
-#' @name EDT_item_bank
+#' The MWM's item bank
+#' @name MWM_item_bank
 #' @docType data
 NULL
 
-#' EDT2 (adaptive) item bank
-#'
-#' The EDT2's item bank
-#' @name EDT2_item_bank
-#' @docType data
-NULL

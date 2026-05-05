@@ -17,6 +17,7 @@ ask_repeat <- function(prompt) {
 make_practice_page <- function(page_no, audio_dir) {
   psychTestR::reactive_page(function(answer, ...) {
     correct <- "INCORRECT"
+    browser()
     if (page_no > 1 && answer == training_answers[page_no-1]) correct <- "CORRECT"
     feedback <- psychTestR::i18n(correct)
     get_practice_page(page_no, feedback, audio_dir)
@@ -33,15 +34,14 @@ get_practice_page <- function(page_no, feedback, audio_dir){
     page <- ask_repeat(prompt)
   }
   else{
-    page <- EDT_item(label = sprintf("training%s", page_no),
+    page <- MWM_item(label = sprintf("training%s", page_no),
                      correct_answer = training_answers[page_no],
                      emotion = NULL,
                      prompt = prompt,
                      audio_dir = audio_dir,
                      audio_file = sprintf("Demo-%s.mp3", page_no + 1),
                      save_answer = FALSE,
-                     instruction_page = TRUE,
-                     adaptive = TRUE)
+                     instruction_page = TRUE)
   }
   page
 }

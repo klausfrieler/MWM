@@ -1,28 +1,28 @@
-#' EDT feedback (with score)
+#' MWM feedback (with score)
 #'
 #' Here the participant is given textual feedback at the end of the test.
 #' @param dict The psychTestR dictionary used for internationalisation.
 #' @export
 #' @examples
 #' \dontrun{
-#' EDT_demo(feedback = EDT_feedback_with_score())}
+#' MWM_demo(feedback = MWM_feedback_with_score())}
 
-EDT_feedback_with_score <- function(dict = EDT::EDT_dict) {
+MWM_feedback_with_score <- function(dict = MWM::MWM_dict) {
     psychTestR::new_timeline(
       psychTestR::reactive_page(function(state, ...) {
-        #browser()
+        browser()
         results <- psychTestR::get_results(state = state,
                                            complete = TRUE,
                                            add_session_info = FALSE) %>% as.list()
         #sum_score <- sum(purrr::map_lgl(results[[1]], function(x) x$correct))
         #num_question <- length(results[[1]])
         #messagef("Sum scores: %d, total items: %d", sum_score, num_question)
-        if (is.null(results$EDT$score)) {
-          num_correct <- sum(attr(results$EDT$ability, "metadata")$results$score)
-          num_question <- nrow(attr(results$EDT$ability, "metadata")$results)
+        if (is.null(results$MWM$score)) {
+          num_correct <- sum(attr(results$MWM$ability, "metadata")$results$score)
+          num_question <- nrow(attr(results$MWM$ability, "metadata")$results)
         }
         else {
-          num_correct <- round(results$EDT$score * results$EDT$num_question)
+          num_correct <- round(results$MWM$score * results$MWM$num_question)
           num_question <- nrow(results)
         }
         text_finish <- psychTestR::i18n("COMPLETED",
@@ -41,7 +41,7 @@ EDT_feedback_with_score <- function(dict = EDT::EDT_dict) {
   )
 }
 
-EDT_feedback_graph_normal_curve <- function(perc_correct, x_min = 40, x_max = 160, x_mean = 100, x_sd = 15) {
+MWM_feedback_graph_normal_curve <- function(perc_correct, x_min = 40, x_max = 160, x_mean = 100, x_sd = 15) {
   q <-
     ggplot2::ggplot(data.frame(x = c(x_min, x_max)), ggplot2::aes(x)) +
     ggplot2::stat_function(fun = stats::dnorm, args = list(mean = x_mean, sd = x_sd)) +
@@ -61,18 +61,18 @@ EDT_feedback_graph_normal_curve <- function(perc_correct, x_min = 40, x_max = 16
   q <- q + ggplot2::ggtitle(main_title)
   plotly::ggplotly(q, width = 600, height = 450)
 }
-#' EDT feedback (with graph)
+#' MWM feedback (with graph)
 #'
 #' Here the participant is given textual and graphical feedback at the end of the test.
 #' @param dict The psychTestR dictionary used for internationalisation.
 #' @export
 #' @examples
 #' \dontrun{
-#' EDT_demo(feedback = EDT_feedback_with_score())}
-EDT_feedback_with_graph <- function(dict = EDT::EDT_dict) {
+#' MWM_demo(feedback = MWM_feedback_with_score())}
+MWM_feedback_with_graph <- function(dict = MWM::MWM_dict) {
   psychTestR::new_timeline(
       psychTestR::reactive_page(function(state, ...) {
-        #browser()
+        browser()
         results <- psychTestR::get_results(state = state,
                                            complete = TRUE,
                                            add_session_info = FALSE) %>% as.list()
@@ -80,13 +80,13 @@ EDT_feedback_with_graph <- function(dict = EDT::EDT_dict) {
         #sum_score <- sum(purrr::map_lgl(results[[1]], function(x) x$correct))
         #printf("Sum scores: %d, total items: %d perc_correct: %.2f", sum_score, num_question, perc_correct)
         #browser()
-        if (is.null(results$EDT$score)) {
-          num_correct <- sum(attr(results$EDT$ability, "metadata")$results$score)
-          num_question <- results$EDT$num_items
-          perc_correct <- (results$EDT$ability+4)/8
+        if (is.null(results$MWM$score)) {
+          num_correct <- sum(attr(results$MWM$ability, "metadata")$results$score)
+          num_question <- results$MWM$num_items
+          perc_correct <- (results$MWM$ability+4)/8
         }
         else {
-          num_correct <- round(results$EDT$score * results$EDT$num_questions)
+          num_correct <- round(results$MWM$score * results$MWM$num_questions)
           num_question <- nrow(results)
           perc_correct <- num_correct/num_question
         }
@@ -94,7 +94,7 @@ EDT_feedback_with_graph <- function(dict = EDT::EDT_dict) {
                                         html = TRUE,
                                         sub = list(num_question = num_question,
                                                    num_correct = num_correct))
-        norm_plot <- EDT_feedback_graph_normal_curve(perc_correct)
+        norm_plot <- MWM_feedback_graph_normal_curve(perc_correct)
         psychTestR::page(
           ui = shiny::div(
             shiny::p(text_finish),

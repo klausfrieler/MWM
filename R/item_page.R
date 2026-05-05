@@ -94,7 +94,6 @@ audio_NAFC_page_flex <- function(label,
                                  choices,
                                  audio_url,
                                  correct_answer,
-                                 adaptive = adaptive,
                                  save_answer = TRUE,
                                  get_answer = NULL,
                                  on_complete = NULL,
@@ -106,31 +105,23 @@ audio_NAFC_page_flex <- function(label,
   ui <- shiny::div(
     tagify(prompt),
     audio_ui,
-    psychTestR::make_ui_NAFC(choices,
-                 labels = choices,
+    psychTestR::make_ui_NAFC(unname(choices),
+                 labels = names(choices),
                  hide = TRUE,
                  arrange_vertically = FALSE,
                  id = "response_ui")
     )
-  if (adaptive){
-    if(is.null(get_answer)){
-      get_answer <- function(input, ...) {
-        as.numeric(gsub("answer", "", input$last_btn_pressed))
-
-      }
-      validate <- function(answer, ...) !is.null(answer)
-    }
-  }
-  else {
+  if(is.null(get_answer)){
     get_answer <- function(input, ...) {
-      answer <- as.numeric(gsub("answer", "", input$last_btn_pressed))
-      correct <- EDT::EDT_item_bank[EDT::EDT_item_bank$item_number == label,]$correct == answer
-      tibble(answer = answer,
-             label = label,
-             correct = correct)
+      #as.numeric(gsub("answer", "", input$last_btn_pressed))
+      browser()
+      as.numeric(input$last_btn_pressed)
+      #input$last_btn_pressed == correct_answer
+
     }
     validate <- function(answer, ...) !is.null(answer)
   }
+
   psychTestR::page(ui = ui, label = label,
                    get_answer = get_answer, save_answer = save_answer,
                    validate = validate, on_complete = on_complete,
@@ -138,13 +129,12 @@ audio_NAFC_page_flex <- function(label,
                    admin_ui = admin_ui)
 }
 
-EDT_item <- function(label = "",
+MWM_item <- function(label = "",
                      emotion,
                      audio_file,
                      correct_answer,
                      prompt = "",
                      audio_dir = "",
-                     adaptive = adaptive,
                      save_answer = TRUE,
                      on_complete = NULL,
                      get_answer = NULL,
@@ -153,6 +143,7 @@ EDT_item <- function(label = "",
                      ){
   page_prompt <- shiny::div(prompt)
   choices <- c("1", "2")
+  names(choices) <- sapply(c("SAME", "DIFFERENT"), psychTestR::i18n)
   audio_url <- file.path(audio_dir, audio_file)
   messagef("instruction_page = %s, autoplay = %s, !instruction_page && autoplay = %s", instruction_page, autoplay, !instruction_page || autoplay)
   audio_NAFC_page_flex(label = label,
@@ -163,7 +154,6 @@ EDT_item <- function(label = "",
                        save_answer = save_answer,
                        get_answer = get_answer,
                        autoplay = !instruction_page && autoplay,
-                       on_complete = on_complete,
-                       adaptive = adaptive)
+                       on_complete = on_complete)
 }
 
