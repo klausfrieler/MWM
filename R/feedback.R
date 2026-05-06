@@ -42,6 +42,7 @@ MWM_feedback_with_score <- function(dict = MWM::MWM_dict) {
 }
 
 MWM_feedback_graph_normal_curve <- function(perc_correct, x_min = 40, x_max = 160, x_mean = 100, x_sd = 15) {
+  browser()
   q <-
     ggplot2::ggplot(data.frame(x = c(x_min, x_max)), ggplot2::aes(x)) +
     ggplot2::stat_function(fun = stats::dnorm, args = list(mean = x_mean, sd = x_sd)) +
