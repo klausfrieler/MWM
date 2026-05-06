@@ -73,7 +73,7 @@ MWM_standalone  <- function(title = NULL,
              ...),
     psychTestR::elt_save_results_to_disk(complete = TRUE),
     psychTestR::code_block(function(state, ...){
-      res <- get_results(state, complete = T)
+      res <- psychTestR::get_results(state, complete = T)
       #browser()
     }),
     MWM_final_page(dict = dict)
