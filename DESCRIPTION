@@ -1,7 +1,7 @@
 Package: MWM
 Type: Package
 Title: Music Working Memory Test
-Version: 0.0.2
+Version: 0.0.3
 Author: Klaus Frieler
 Maintainer: Klaus Frieler <klaus.frieler@ae.mpg.de>
 Description: Implementation of an adaptive musical working memory test

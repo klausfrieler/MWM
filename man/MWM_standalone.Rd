@@ -17,6 +17,7 @@ MWM_standalone(
   validate_id = "auto",
   take_training = FALSE,
   autoplay = TRUE,
+  demo = FALSE,
   ...
 )
 }
