@@ -114,7 +114,6 @@ audio_NAFC_page_flex <- function(label,
   if(is.null(get_answer)){
     get_answer <- function(input, ...) {
       #as.numeric(gsub("answer", "", input$last_btn_pressed))
-      browser()
       as.numeric(input$last_btn_pressed)
       #input$last_btn_pressed == correct_answer
 
@@ -130,7 +129,6 @@ audio_NAFC_page_flex <- function(label,
 }
 
 MWM_item <- function(label = "",
-                     emotion,
                      audio_file,
                      correct_answer,
                      prompt = "",
@@ -145,7 +143,7 @@ MWM_item <- function(label = "",
   choices <- c("1", "2")
   names(choices) <- sapply(c("SAME", "DIFFERENT"), psychTestR::i18n)
   audio_url <- file.path(audio_dir, audio_file)
-  messagef("instruction_page = %s, autoplay = %s, !instruction_page && autoplay = %s", instruction_page, autoplay, !instruction_page || autoplay)
+  #messagef("instruction_page = %s, autoplay = %s, !instruction_page && autoplay = %s", instruction_page, autoplay, !instruction_page || autoplay)
   audio_NAFC_page_flex(label = label,
                        prompt = page_prompt,
                        audio_url = audio_url,

@@ -41,6 +41,7 @@ MWM_standalone  <- function(title = NULL,
                            validate_id = "auto",
                            take_training = FALSE,
                            autoplay = TRUE,
+                           demo = FALSE,
                            ...) {
   feedback <- NULL
   if(with_feedback) {
@@ -89,12 +90,11 @@ MWM_standalone  <- function(title = NULL,
       unlist()
     names(title) <- tolower(names(title))
   }
-
   psychTestR::make_test(
     elts,
     opt = psychTestR::test_options(title = title,
                                    admin_password = admin_password,
                                    researcher_email = researcher_email,
-                                   demo = FALSE,
+                                   demo = demo,
                                    languages = tolower(languages)))
 }

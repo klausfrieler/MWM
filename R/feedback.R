@@ -10,7 +10,6 @@
 MWM_feedback_with_score <- function(dict = MWM::MWM_dict) {
     psychTestR::new_timeline(
       psychTestR::reactive_page(function(state, ...) {
-        browser()
         results <- psychTestR::get_results(state = state,
                                            complete = TRUE,
                                            add_session_info = FALSE) %>% as.list()

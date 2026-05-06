@@ -3,7 +3,7 @@ get_eligible_first_items_MWM <- function(){
   lower_sd <- mean(MWM::MWM_item_bank$difficulty) - stats::sd(MWM::MWM_item_bank$difficulty)
   upper_sd <- mean(MWM::MWM_item_bank$difficulty) + stats::sd(MWM::MWM_item_bank$difficulty)
   which(MWM::MWM_item_bank$difficulty >= lower_sd  &
-         MWM::MWM_item_bank$difficulty <= upper_sd)
+         MWM::MWM_item_bank$difficulty <= upper_sd) %>% sample(25) %>% sort()
 }
 
 main_test <- function(label,
@@ -19,6 +19,9 @@ main_test <- function(label,
                       autoplay = TRUE,
                       ...) {
   item_bank <- MWM::MWM_item_bank
+  first_items <- get_eligible_first_items_MWM()
+  #print(item_bank[first_items,])
+  #print(first_items)
   psychTestRCAT::adapt_test(
     label = label,
     item_bank = item_bank,
@@ -31,7 +34,7 @@ main_test <- function(label,
       next_item.prior_par = next_item.prior_par,
       final_ability.estimator = final_ability.estimator,
       constrain_answers = constrain_answers,
-      eligible_first_items = get_eligible_first_items_MWM(),
+      eligible_first_items = first_items,
       item_bank = item_bank
     )
   )
@@ -93,12 +96,15 @@ MWM_final_page <- function(dict = MWM::MWM_dict){
 show_item <- function(audio_dir, autoplay) {
   function(item, ...) {
     #stopifnot(is(item, "item"), nrow(item) == 1L)
+    #print(item)
     item_number <- psychTestRCAT::get_item_number(item)
     num_items <- psychTestRCAT::get_num_items_in_test(item)
-    #messagef("Showing item %s, correct = %s", item_number, item$answer)
+    messagef("Showing item #%d: %s, correct = %s",
+             item_number,
+             item$audio_file,
+             item$answer)
     MWM_item(
       label = paste0("q", item_number),
-      emotion = emotion,
       audio_file = item$audio_file,
       correct_answer = item$answer,
       prompt = get_prompt(item_number, num_items),
